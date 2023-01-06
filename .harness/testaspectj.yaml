@@ -63,3 +63,10 @@ pipeline:
                       uses: GabrielBB/xvfb-action@v1.6
                       with:
                         run: ./mvnw -B --file pom.xml -Daspectj.tests.verbose=false verify
+        strategy:
+          matrix:
+            java:
+              - 11
+              - 17
+              - 19
+            maxConcurrency: 1
