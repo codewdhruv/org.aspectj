@@ -66,6 +66,9 @@ pipeline:
                     shell: Sh
                     command: |
                       ./mvnw -B --file pom.xml -DskipTests process-resources -pl docs -P create-docs
+                  when:
+                    stageStatus: All
+                  failureStrategies: []
               - step:
                   type: Plugin
                   name: Run Tests
@@ -78,6 +81,9 @@ pipeline:
                       uses: GabrielBB/xvfb-action@v1.6
                       with:
                         run: ./mvnw -B --file pom.xml -Daspectj.tests.verbose=false verify
+                  when:
+                    stageStatus: All
+                  failureStrategies: []
         strategy:
           matrix:
             java:
