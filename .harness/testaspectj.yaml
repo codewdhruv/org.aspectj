@@ -1,0 +1,45 @@
+pipeline:
+  name: test-aspectj
+  identifier: testaspectj
+  projectIdentifier: DhrubaCI
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: dhrubaaccountconnector
+        repoName: org.aspectj
+        build: <+input>
+  stages:
+    - stage:
+        name: maven
+        identifier: maven
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Print tool versions
+                  identifier: Print_tool_versions
+                  spec:
+                    shell: Sh
+                    command: |-
+                      java -version
+                      ./mvnw -B --version
+                      ant -version
+              - step:
+                  type: Run
+                  name: Compile package code
+                  identifier: Compile_package_code
+                  spec:
+                    shell: Sh
+                    command: ./mvnw -B --file pom.xml -DskipTests install
