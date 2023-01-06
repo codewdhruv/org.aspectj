@@ -44,6 +44,21 @@ pipeline:
                     shell: Sh
                     command: ./mvnw -B --file pom.xml -DskipTests install
               - step:
+                  type: Plugin
+                  name: Attach aspectjrt to build
+                  identifier: Attach_aspectjrt_to_build
+                  spec:
+                    connectorRef: DhrubajyotiDocker
+                    image: plugins/github-actions
+                    privileged: true
+                    settings:
+                      uses: actions/upload-artifact@v3
+                      with:
+                        name: aspectjrt-java<+matrix.java>
+                        path: |
+                          aspectjrt/target/aspectjrt-*.jar
+                          aspectjrt/target/flattened-pom.xml
+              - step:
                   type: Run
                   name: Create docs
                   identifier: Create_docs
