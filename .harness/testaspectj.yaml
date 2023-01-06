@@ -43,51 +43,52 @@ pipeline:
                   spec:
                     shell: Sh
                     command: ./mvnw -B --file pom.xml -DskipTests install
-              - step:
-                  type: Plugin
-                  name: Attach aspectjrt to build
-                  identifier: Attach_aspectjrt_to_build
-                  spec:
-                    connectorRef: DhrubajyotiDocker
-                    image: plugins/github-actions
-                    privileged: true
-                    settings:
-                      uses: actions/upload-artifact@v3
-                      with:
-                        name: aspectjrt-java<+matrix.java>
-                        path: |
-                          aspectjrt/target/aspectjrt-*.jar
-                          aspectjrt/target/flattened-pom.xml
-              - step:
-                  type: Plugin
-                  name: Attach aspectjweaver to build
-                  identifier: Attach_aspectjweaver_to_build
-                  spec:
-                    connectorRef: DhrubajyotiDocker
-                    image: plugins/github-actions
-                    privileged: true
-                    settings:
-                      uses: actions/upload-artifact@v3
-                      with:
-                        name: aspectjrt-java<+matrix.java>
-                        path: |
-                          aspectjweaver/target/aspectjweaver-*.jar
-                          aspectjweaver/target/flattened-pom.xml
-              - step:
-                  type: Plugin
-                  name: Attach aspectjtools to build
-                  identifier: Attach_aspectjtools_to_build
-                  spec:
-                    connectorRef: DhrubajyotiDocker
-                    image: plugins/github-actions
-                    privileged: true
-                    settings:
-                      uses: actions/upload-artifact@v3
-                      with:
-                        name: aspectjrt-java<+matrix.java>
-                        path: |
-                          aspectjtools/target/aspectjtools-*.jar
-                          aspectjtools/target/flattened-pom.xml
+              - parallel:
+                  - step:
+                      type: Plugin
+                      name: Attach aspectjrt to build
+                      identifier: Attach_aspectjrt_to_build
+                      spec:
+                        connectorRef: DhrubajyotiDocker
+                        image: plugins/github-actions
+                        privileged: true
+                        settings:
+                          uses: actions/upload-artifact@v3
+                          with:
+                            name: aspectjrt-java<+matrix.java>
+                            path: |
+                              aspectjrt/target/aspectjrt-*.jar
+                              aspectjrt/target/flattened-pom.xml
+                  - step:
+                      type: Plugin
+                      name: Attach aspectjweaver to build
+                      identifier: Attach_aspectjweaver_to_build
+                      spec:
+                        connectorRef: DhrubajyotiDocker
+                        image: plugins/github-actions
+                        privileged: true
+                        settings:
+                          uses: actions/upload-artifact@v3
+                          with:
+                            name: aspectjrt-java<+matrix.java>
+                            path: |
+                              aspectjweaver/target/aspectjweaver-*.jar
+                              aspectjweaver/target/flattened-pom.xml
+                  - step:
+                      type: Plugin
+                      name: Attach aspectjtools to build
+                      identifier: Attach_aspectjtools_to_build
+                      spec:
+                        connectorRef: DhrubajyotiDocker
+                        image: plugins/github-actions
+                        privileged: true
+                        settings:
+                          uses: actions/upload-artifact@v3
+                          with:
+                            name: aspectjrt-java<+matrix.java>
+                            path: |
+                              aspectjtools/target/aspectjtools-*.jar
+                              aspectjtools/target/flattened-pom.xml
               - step:
                   type: Run
                   name: Create docs
